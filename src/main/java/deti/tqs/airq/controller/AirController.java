@@ -33,13 +33,12 @@ public class AirController {
 
     //
 
-    @GetMapping("/air/{country}/{state}/{cityName}")
-    private AirQuality getCityAirQuality(@PathVariable String country, @PathVariable String state,
-            @PathVariable String cityName) throws UnirestException
+    @GetMapping("/air/{cityName}")
+    private AirQuality getCityAirQuality(@PathVariable String cityName) throws UnirestException
     {
 
         // Cache the result
-        AirQuality airq = this.airService.getAirForCity(country, state, cityName);
+        AirQuality airq = this.airService.getAirForCity(cityName);
         // CacheObject cacheObj =
         return airq;
 
