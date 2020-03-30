@@ -2,10 +2,19 @@ package deti.tqs.airq.services;
 
 import java.util.HashMap;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 public class AirCache
 {
 
-    private HashMap<String, CacheObject> cache = new HashMap<>();
+    // @Id
+    // @GeneratedValue
+    // private long id;
+
+    private String cityName;
+    private CacheObject cacheObj;
+
     private int maxSize;
 
     
@@ -24,31 +33,6 @@ public class AirCache
     public void setMaxSize(int maxSize)
     {
         this.maxSize = maxSize;
-    }
-
-    //
-
-
-    public CacheObject getAirQuality(String city)
-    {
-
-        if(this.cache.containsKey(city))
-        {
-            return this.cache.get(city);
-        }
-
-        // IDEA: Implement NullObject Software Pattern here
-        return null;
-
-    }
-
-    public void putAirQuality(CacheObject obj)
-    {
-
-        // If we have memory shortage, THEN use the maxSize here
-        // otherwise, it's overengineering
-        this.cache.put(obj.getAirQuality().getCity(), obj);
-
     }
 
 }

@@ -30,11 +30,11 @@ public class AirControllerTest
     {
     
         // "Programming" the mock
-        given(airService.getAirForCity("coimbra"))
+        given(airService.getAirForCity("portugal", "coimbra", "coimbra"))
         .willReturn(new AirQuality("coimbra", "PM10", "CO2", "O3"));
 
         // Testing a GET on a given end-point
-        servlet.perform(MockMvcRequestBuilders.get("/air/coimbra"))
+        servlet.perform(MockMvcRequestBuilders.get("/air/portugal/coimbra/coimbra"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("city").value("coimbra"));
         //.andExpect(content().equals(new AirQuality("coimbra", "PM10", "CO2", "O3")));

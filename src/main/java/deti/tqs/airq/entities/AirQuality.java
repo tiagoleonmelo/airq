@@ -1,9 +1,17 @@
 package deti.tqs.airq.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 // POJO
+@Entity
 public class AirQuality
 {
+
+    @Id
+    @GeneratedValue
+    private long id;
 
     private String city, pm10, co2, o3;
 
