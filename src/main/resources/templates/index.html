@@ -48,10 +48,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-dark navbar-custom fixed-top">
         <!-- Text Logo - Use this if you don't have a graphic logo -->
-        <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Aria</a> -->
+        <a class="navbar-brand logo-text page-scroll" href="index.html">AirQ</a>
 
         <!-- Image Logo -->
-        <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a>
+        <!-- <a class="navbar-brand logo-image" href="index.html"><img src="images/logo.svg" alt="alternative"></a> -->
         
         <!-- Mobile Menu Toggle Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,11 +137,14 @@
             <div class="row">
                 <div class="col-lg-5">
                     <div class="text-container">
-                        <div class="section-title">INTRO</div>
-                        <h2>We Offer Some Of The Best Business Growth Services In Town</h2>
-                        <p>Launching a new company or developing the market position of an existing one can be quite an overwhelming processs at times.</p>
-                        <p class="testimonial-text">"Our mission here at Aira is to get you through those tough moments relying on our team's expertise in starting and growing companies."</p>
-                        <div class="testimonial-author">Louise Donovan - CEO</div>
+                        <div class="section-title">RESULTS</div>
+                        <h2 th:text="${air.city + ', ' + air.country}">Search for a city above!</h2>
+                        
+                        <p th:text="${air.pm10}"></p>
+                        <p th:text="${air.co}"></p>
+                        <p th:text="${air.o3}"></p>
+                        <p th:text="${air.aqi}"></p>
+
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
                 <div class="col-lg-7">

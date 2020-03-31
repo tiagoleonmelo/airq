@@ -68,8 +68,11 @@ public class AirService {
             return null;
         }
 
+        String capCity = city.substring(0, 1).toUpperCase() + city.substring(1);
 
-        return new AirQuality(  city,
+        return new AirQuality(  
+                                first.getString("countryCode"),
+                                capCity,
                                 Double.toString(first.getDouble("PM10")),
                                 Double.toString(first.getDouble("CO")),
                                 Double.toString(first.getDouble("OZONE")),

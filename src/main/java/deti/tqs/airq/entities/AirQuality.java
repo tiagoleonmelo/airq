@@ -5,9 +5,10 @@ package deti.tqs.airq.entities;
 public class AirQuality
 {
 
-    private String city, pm10, co, o3, aqi;
+    private String country, city, pm10, co, o3, aqi;
 
-    public AirQuality(String city, String pm10, String co, String o3, String aqi) {
+    public AirQuality(String country, String city, String pm10, String co, String o3, String aqi) {
+        this.country = country;
         this.city = city;
         this.pm10 = pm10;
         this.co = co;
@@ -53,6 +54,14 @@ public class AirQuality
 
     public void setAqi(String aqi) {
         this.aqi = aqi;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override

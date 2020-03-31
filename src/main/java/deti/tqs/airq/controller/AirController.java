@@ -41,8 +41,10 @@ public class AirController {
 
         // Cache the result
         AirQuality airq = this.airService.getAirForCity(cityName);
+
         // CacheObject cacheObj =
         model.addAttribute("air", airq);
+
         return "index";
 
     }
@@ -52,7 +54,7 @@ public class AirController {
     private AirQuality apiGetCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
-        // Cache the result
+        // TODO: Cache the result
         AirQuality airq = this.airService.getAirForCity(cityName);
         return airq;
 
