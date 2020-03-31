@@ -30,7 +30,7 @@ public class AirServiceTest {
     public void whenGetCoimbraStats_returnCoimbraStats() throws UnirestException
     {
 
-        AirQuality cbr = sutAirServiceSut.getAirForCity("coimbra");
+        AirQuality cbr = sutAirServiceSut.getAirForCity("Coimbra");
 
         assertEquals(new AirQuality("PT", "coimbra")
                             .putAttr("PM10", "18.97")
