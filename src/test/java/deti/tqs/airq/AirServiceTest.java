@@ -32,7 +32,13 @@ public class AirServiceTest {
 
         AirQuality cbr = sutAirServiceSut.getAirForCity("coimbra");
 
-        assertEquals(new AirQuality("PT", "coimbra", "18.97", "0.63", "69", "91").getCity(), cbr.getCity());
+        assertEquals(new AirQuality("PT", "coimbra")
+                            .putAttr("PM10", "18.97")
+                            .putAttr("CO", "0.63")
+                            .putAttr("OZONE", "69")
+                            .putAttr("AQI", "91")
+                            .getCity(), cbr.getCity());
+
 
     }
 

@@ -1,19 +1,18 @@
 package deti.tqs.airq.entities;
 
+import java.util.HashMap;
 
 // POJO
 public class AirQuality
 {
 
-    private String country, city, pm10, co, o3, aqi;
+    private String country, city;
+    private HashMap<String, String> attributes;
 
-    public AirQuality(String country, String city, String pm10, String co, String o3, String aqi) {
+    public AirQuality(String country, String city) {
         this.country = country;
         this.city = city;
-        this.pm10 = pm10;
-        this.co = co;
-        this.o3 = o3;
-        this.aqi = aqi;
+        this.attributes = new HashMap<String, String>();
     }
 
     public String getCity() {
@@ -24,38 +23,6 @@ public class AirQuality
         this.city = city;
     }
 
-    public String getPm10() {
-        return pm10;
-    }
-
-    public void setPm10(String pm10) {
-        this.pm10 = pm10;
-    }
-
-    public String getCo() {
-        return co;
-    }
-
-    public void setCo(String co) {
-        this.co = co;
-    }
-
-    public String getO3() {
-        return o3;
-    }
-
-    public void setO3(String o3) {
-        this.o3 = o3;
-    }
-
-    public String getAqi() {
-        return aqi;
-    }
-
-    public void setAqi(String aqi) {
-        this.aqi = aqi;
-    }
-
     public String getCountry() {
         return country;
     }
@@ -64,21 +31,21 @@ public class AirQuality
         this.country = country;
     }
 
-    @Override
-    public String toString() {
-        return "AirQuality [aqi=" + aqi + ", city=" + city + ", co=" + co + ", o3=" + o3 + ", pm10="
-                + pm10 + "]";
+    public HashMap<String, String> getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(HashMap<String, String> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((aqi == null) ? 0 : aqi.hashCode());
+        result = prime * result + ((attributes == null) ? 0 : attributes.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((co == null) ? 0 : co.hashCode());
-        result = prime * result + ((o3 == null) ? 0 : o3.hashCode());
-        result = prime * result + ((pm10 == null) ? 0 : pm10.hashCode());
+        result = prime * result + ((country == null) ? 0 : country.hashCode());
         return result;
     }
 
@@ -91,32 +58,37 @@ public class AirQuality
         if (getClass() != obj.getClass())
             return false;
         AirQuality other = (AirQuality) obj;
-        if (aqi == null) {
-            if (other.aqi != null)
+        if (attributes == null) {
+            if (other.attributes != null)
                 return false;
-        } else if (!aqi.equals(other.aqi))
+        } else if (!attributes.equals(other.attributes))
             return false;
         if (city == null) {
             if (other.city != null)
                 return false;
         } else if (!city.equals(other.city))
             return false;
-        if (co == null) {
-            if (other.co != null)
+        if (country == null) {
+            if (other.country != null)
                 return false;
-        } else if (!co.equals(other.co))
-            return false;
-        if (o3 == null) {
-            if (other.o3 != null)
-                return false;
-        } else if (!o3.equals(other.o3))
-            return false;
-        if (pm10 == null) {
-            if (other.pm10 != null)
-                return false;
-        } else if (!pm10.equals(other.pm10))
+        } else if (!country.equals(other.country))
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "AirQuality [attributes=" + attributes + ", city=" + city + ", country=" + country + "]";
+    }
+
+
+    // Since we are using a HashMap for scalability purposes, we need a method
+    // to add attributes
+    public AirQuality putAttr(String key, String value)
+    {
+        this.attributes.put(key, value);
+        return this;
+    }
+
 
 }

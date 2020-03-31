@@ -15,8 +15,7 @@ import deti.tqs.airq.entities.AirQuality;
 import deti.tqs.airq.services.AirService;
 
 @WebMvcTest
-public class AirControllerTest
-{
+public class AirControllerTest {
 
     @Autowired
     MockMvc servlet;
@@ -24,21 +23,18 @@ public class AirControllerTest
     @MockBean
     AirService airService;
 
-
     @Test
-    public void whenGetAirForCity_thenReturnAirQuality() throws Exception
-    {
-    
+    public void whenGetAirForCity_thenReturnAirQuality() throws Exception {
+
         // "Programming" the mock
-        given(airService.getAirForCity("coimbra"))
-        .willReturn(new AirQuality("PT", "coimbra", "18.97", "0.63", "69", "91"));
+        given(airService.getAirForCity("coimbra")).willReturn(new AirQuality("PT", "coimbra").putAttr("PM10", "18.97")
+                .putAttr("CO", "0.63").putAttr("OZONE", "69").putAttr("AQI", "91"));
 
         // Testing a GET on a given API endpoint
-        servlet.perform(MockMvcRequestBuilders.get("/api/coimbra"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("city").value("coimbra"));
-        //.andExpect(content().equals(new AirQuality("coimbra", "18.97", "0.63", "69", "91")));
-
+        servlet.perform(MockMvcRequestBuilders.get("/api/coimbra")).andExpect(status().isOk())
+                .andExpect(jsonPath("city").value("coimbra"));
+        // .andExpect(content().equals(new AirQuality("coimbra", "18.97", "0.63", "69",
+        // "91")));
 
     }
 

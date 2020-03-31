@@ -48,36 +48,28 @@ public class AirService {
 
         // Here we make our API call
         Unirest.setTimeouts(0, 0);
-        HttpResponse<JsonNode> response = Unirest
-                .get("https://api.ambeedata.com/latest/by-city?city=" + city)
-                .header("accept", "application/json")
-                .header("x-api-key", this.key)
-                .asJson();
+        HttpResponse<JsonNode> response = Unirest.get("https://api.ambeedata.com/latest/by-city?city=" + city)
+                .header("accept", "application/json").header("x-api-key", this.key).asJson();
 
         JSONObject jsonObject = response.getBody().getObject();
         JSONArray stations = jsonObject.getJSONArray("stations");
         JSONObject first;
 
-        if(stations.length() > 0)
-        {
+        if (stations.length() > 0) {
             first = stations.getJSONObject(0);
-        }
-        else
-        {
+        } else {
             System.out.println("ERROR: Not found");
             return null;
         }
 
         String capCity = city.substring(0, 1).toUpperCase() + city.substring(1);
 
-        return new AirQuality(  
-                                first.getString("countryCode"),
-                                capCity,
-                                Double.toString(first.getDouble("PM10")),
-                                Double.toString(first.getDouble("CO")),
-                                Double.toString(first.getDouble("OZONE")),
-                                Double.toString(first.getDouble("AQI"))
-        );
+        return new AirQuality(first.getString("countryCode"), capCity)
+                .putAttr("PM10", Double.toString(first.getDouble("PM10")))
+                .putAttr("CO", Double.toString(first.getDouble("CO")))
+                .putAttr("OZONE", Double.toString(first.getDouble("OZONE")))
+                .putAttr("AQI", Double.toString(first.getDouble("AQI")));
+
     }
 
 }
