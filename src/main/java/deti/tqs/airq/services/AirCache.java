@@ -1,19 +1,21 @@
 package deti.tqs.airq.services;
 
-import java.util.HashMap;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+
+@Entity
 public class AirCache
 {
 
-    // @Id
-    // @GeneratedValue
-    // private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-    private String cityName;
-    private CacheObject cacheObj;
+    // private String cityName;
+    // private CacheObject cacheObj;
 
     private int maxSize;
 

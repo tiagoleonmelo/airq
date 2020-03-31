@@ -3,15 +3,16 @@ package deti.tqs.airq.controller;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import deti.tqs.airq.entities.AirQuality;
 import deti.tqs.airq.services.AirService;
-import deti.tqs.airq.services.CacheObject;
 
-@RestController
+@Controller
+@RequestMapping("/")
 public class AirController {
 
     @Autowired
@@ -33,14 +34,15 @@ public class AirController {
 
     //
 
-    @GetMapping("/air/{cityName}")
-    private AirQuality getCityAirQuality(@PathVariable String cityName) throws UnirestException
+    @RequestMapping("/{cityName}")
+    private String getCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
         // Cache the result
         AirQuality airq = this.airService.getAirForCity(cityName);
         // CacheObject cacheObj =
-        return airq;
+        model.addAttribute("air", airq);
+        return "index";
 
     }
 

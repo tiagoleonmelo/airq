@@ -19,8 +19,7 @@ public class AirService {
     @Autowired
     private AirRepository airRepository;
     // private AirCache airCache;
-    private String key = "733ed6b1-d26a-48fb-bfcf-fd7b4bf500cd";
-    private CityResolver cr = new CityResolver();
+    private String key = "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc";
 
     // Constructor, getters and setters
 
@@ -52,7 +51,7 @@ public class AirService {
         HttpResponse<JsonNode> response = Unirest
                 .get("https://api.ambeedata.com/latest/by-city?city=" + city)
                 .header("accept", "application/json")
-                .header("x-api-key", "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc")
+                .header("x-api-key", this.key)
                 .asJson();
 
         JSONObject jsonObject = response.getBody().getObject();
@@ -70,7 +69,12 @@ public class AirService {
         }
 
 
-        return new AirQuality(city, first.getString("PM10"), first.getString("CO"), first.getString("OZONE"), first.getString("AQI"));
+        return new AirQuality(  city,
+                                Double.toString(first.getDouble("PM10")),
+                                Double.toString(first.getDouble("CO")),
+                                Double.toString(first.getDouble("OZONE")),
+                                Double.toString(first.getDouble("AQI"))
+        );
     }
 
 }

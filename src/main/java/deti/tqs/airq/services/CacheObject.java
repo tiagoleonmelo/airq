@@ -1,5 +1,6 @@
 package deti.tqs.airq.services;
 
+
 import deti.tqs.airq.entities.AirQuality;
 
 public class CacheObject
