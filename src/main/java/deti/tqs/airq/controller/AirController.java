@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import deti.tqs.airq.entities.AirQuality;
 import deti.tqs.airq.services.AirService;
@@ -43,6 +44,17 @@ public class AirController {
         // CacheObject cacheObj =
         model.addAttribute("air", airq);
         return "index";
+
+    }
+
+    @RequestMapping("/api/{cityName}")
+    @ResponseBody
+    private AirQuality apiGetCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
+    {
+
+        // Cache the result
+        AirQuality airq = this.airService.getAirForCity(cityName);
+        return airq;
 
     }
 

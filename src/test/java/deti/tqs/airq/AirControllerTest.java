@@ -33,8 +33,8 @@ public class AirControllerTest
         given(airService.getAirForCity("coimbra"))
         .willReturn(new AirQuality("coimbra", "18.97", "0.63", "69", "91"));
 
-        // Testing a GET on a given end-point
-        servlet.perform(MockMvcRequestBuilders.get("/air/coimbra"))
+        // Testing a GET on a given API endpoint
+        servlet.perform(MockMvcRequestBuilders.get("/api/coimbra"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("city").value("coimbra"));
         //.andExpect(content().equals(new AirQuality("coimbra", "PM10", "CO2", "O3")));
