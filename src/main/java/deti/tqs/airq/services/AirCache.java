@@ -13,10 +13,6 @@ public class AirCache
     @Id
     @GeneratedValue
     private long id;
-
-    // private String cityName;
-    // private CacheObject cacheObj;
-
     private int maxSize;
 
     

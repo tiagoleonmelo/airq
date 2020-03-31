@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AirqApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AirqApplication.class, args);
+		SpringApplication.run(AirqApplication.class);
 	}
 
 }

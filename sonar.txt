@@ -1,0 +1,1 @@
+mvn sonar:sonar -Dsonar.projectKey=deti.tqs:airq -Dsonar.host.url=http://localhost:9000 -Dsonar.login=541fb4f818eecaff3527ae066d5709fffb9f5147

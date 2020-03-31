@@ -1,18 +1,20 @@
 package deti.tqs.airq.entities;
 
 import java.util.HashMap;
+import java.util.Map;
 
 // POJO
 public class AirQuality
 {
 
-    private String country, city;
+    private String country;
+    private String city;
     private HashMap<String, String> attributes;
 
     public AirQuality(String country, String city) {
         this.country = country;
         this.city = city;
-        this.attributes = new HashMap<String, String>();
+        this.attributes = new HashMap<>();
     }
 
     public String getCity() {
@@ -31,12 +33,12 @@ public class AirQuality
         this.country = country;
     }
 
-    public HashMap<String, String> getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(HashMap<String, String> attributes) {
-        this.attributes = attributes;
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = (HashMap<String, String>) attributes;
     }
 
     @Override

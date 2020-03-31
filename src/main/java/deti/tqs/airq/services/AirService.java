@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,13 @@ public class AirService {
 
     @Autowired
     private AirRepository airRepository;
-    // private AirCache airCache;
     private String key = "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc";
+	static final Logger logger = Logger.getLogger(AirService.class);
 
     // Constructor, getters and setters
 
     public AirService(AirRepository airRepository) {
         this.airRepository = airRepository;
-        // this.airCache = airCache;
     }
 
     public AirRepository getAirRepository() {
@@ -39,12 +39,6 @@ public class AirService {
     //
 
     public AirQuality getAirForCity(String city) throws UnirestException {
-        // CacheObject obj = this.airCache.getAirQuality(city);
-
-        // if(obj != null)
-        // {
-        // return obj.getAirQuality();
-        // }
 
         // Here we make our API call
         Unirest.setTimeouts(0, 0);
@@ -58,7 +52,8 @@ public class AirService {
         if (stations.length() > 0) {
             first = stations.getJSONObject(0);
         } else {
-            System.out.println("ERROR: Not found");
+            logger.error("ERROR: City " + city + " not found!");
+
             return null;
         }
 

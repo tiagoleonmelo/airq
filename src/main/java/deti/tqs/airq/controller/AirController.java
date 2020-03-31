@@ -5,10 +5,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,17 +38,18 @@ public class AirController {
 
     //
 
-    @RequestMapping("/")
-    private String index(Model model)
+    @RequestMapping(value="/", method=RequestMethod.GET)
+    public String index(Model model)
     {
+
         model.addAttribute("air", new AirQuality("", ""));
 
         return "index";
 
     }
 
-    @RequestMapping("/{cityName}")
-    private String getCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
+    @RequestMapping(value="/{cityName}", method=RequestMethod.GET)
+    public String getCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
         // Cache the result
@@ -61,29 +62,22 @@ public class AirController {
 
     }
 
-    @RequestMapping("/api/{cityName}")
+    @RequestMapping(value="/api/{cityName}",  method=RequestMethod.GET)
     @ResponseBody
-    private AirQuality apiGetCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
+    public AirQuality apiGetCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
         // TODO: Cache the result
-        AirQuality airq = this.airService.getAirForCity(cityName);
-        return airq;
+        return this.airService.getAirForCity(cityName);
 
     }
 
 
     @PostMapping("/")
-    private String search(@RequestParam String q, Model model) throws UnirestException
+    public String search(@RequestParam String q, Model model)
     {
 
-        // Cache the result
-        AirQuality airq = this.airService.getAirForCity(q);
-
-        // CacheObject cacheObj =
-        model.addAttribute("air", airq);
-
-        return "redirect:/"+q+"#intro";
+        return "redirect:/"+q+"#results";
 
     }    
 

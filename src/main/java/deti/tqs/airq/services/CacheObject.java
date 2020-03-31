@@ -7,7 +7,8 @@ public class CacheObject
 {
 
     private AirQuality airQuality;
-    private int hits, misses;
+    private int hits;
+    private int misses;
     private double ttl;
 
     public CacheObject(AirQuality airQuality, int hits, int misses, double ttl) {
