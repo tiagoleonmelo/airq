@@ -14,6 +14,9 @@ public class CacheObject
     private long ttl;
     private long lastAccess;
 
+    public CacheObject(){
+        
+    }
 
     public CacheObject(String city, int hits, int misses, long ttl) {
         this.city = city;

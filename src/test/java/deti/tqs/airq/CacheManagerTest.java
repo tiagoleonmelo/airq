@@ -135,6 +135,7 @@ public class CacheManagerTest {
 
     }
 
-
+    // TODO: Test if hits and misses are being recorded
+    // TODO: Test last accesses
 
 }

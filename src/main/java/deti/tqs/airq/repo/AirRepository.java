@@ -9,6 +9,6 @@ import deti.tqs.airq.services.CacheObject;
 public interface AirRepository extends JpaRepository<CacheObject, String>
 {
 
-
+    // TODO: Unit Test this class somehow. (saves, gets, finds, integration with cache?)
 
 }
