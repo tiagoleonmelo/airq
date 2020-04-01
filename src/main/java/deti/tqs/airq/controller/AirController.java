@@ -38,6 +38,8 @@ public class AirController {
 
     //
 
+    // Endpoint Mapping
+
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String index(Model model)
     {
@@ -52,10 +54,8 @@ public class AirController {
     public String getCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
-        // Cache the result
         AirQuality airq = this.airService.getAirForCity(cityName);
 
-        // CacheObject cacheObj =
         model.addAttribute("air", airq);
 
         return "index";
@@ -67,7 +67,6 @@ public class AirController {
     public AirQuality apiGetCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
-        // TODO: Cache the result
         return this.airService.getAirForCity(cityName);
 
     }
@@ -77,7 +76,7 @@ public class AirController {
     public String search(@RequestParam String q, Model model)
     {
 
-        return "redirect:/"+q+"#results";
+        return "redirect:/" + q + "#results";
 
     }    
 

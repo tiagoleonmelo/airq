@@ -19,6 +19,10 @@ public class AirService {
 
     @Autowired
     private AirRepository airRepository;
+
+    @Autowired
+    private CacheManager cacheManager;
+
     private String key = "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc";
 	static final Logger logger = Logger.getLogger(AirService.class);
 
@@ -26,6 +30,7 @@ public class AirService {
 
     public AirService(AirRepository airRepository) {
         this.airRepository = airRepository;
+        this.cacheManager = new CacheManager(airRepository);
     }
 
     public AirRepository getAirRepository() {
@@ -40,7 +45,26 @@ public class AirService {
 
     public AirQuality getAirForCity(String city) throws UnirestException {
 
-        // Here we make our API call
+        AirQuality returnable;
+
+        // Check if we have this request cached
+        if(this.cacheManager.containsCached(city)) {
+
+            returnable = this.cacheManager.getCached(city);
+
+        } else {
+
+            // If not, we make our API call, instance a CacheObject and add 1 miss to this
+            returnable = this.apiCall(city);
+            this.cacheManager.storeInCache(returnable);
+
+        }
+
+        return returnable;
+    }
+
+    private AirQuality apiCall(String city) throws UnirestException {
+
         Unirest.setTimeouts(0, 0);
         HttpResponse<JsonNode> response = Unirest.get("https://api.ambeedata.com/latest/by-city?city=" + city)
                 .header("accept", "application/json").header("x-api-key", this.key).asJson();
