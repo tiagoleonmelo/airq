@@ -3,8 +3,8 @@ package deti.tqs.airq.services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +19,8 @@ public class CacheManager {
 
     private HashMap<String, AirQuality> cache = new HashMap<>();
     private HashMap<String, CacheObject> cacheData = new HashMap<>();
+
+    static final Logger logger = Logger.getLogger(CacheManager.class);
 
 
     // Constructor, getters and setters
@@ -58,6 +60,8 @@ public class CacheManager {
             hit.setHits(hit.getHits() + 1);
             this.airRepository.save(hit);
 
+            logger.info("Accessing cache!");
+
             return this.cache.get(city);
         }
     }
@@ -76,13 +80,13 @@ public class CacheManager {
         
         if(this.airRepository.existsById(airQuality.getCity()))
         {
-            Optional<CacheObject> retrieved = this.airRepository.findById(airQuality.getCity());
-            temp = retrieved.get();
+            temp = this.airRepository.findById(airQuality.getCity()).get();
+            temp.setMisses(temp.getMisses() + 1);
         }
         else
         {
-            // Each CacheObject is initialized with a default value of ttl = 3
-            temp = new CacheObject(airQuality.getCity(), 0, 0, 3);
+            // Each CacheObject is initialized with a default value of ttl = 15
+            temp = new CacheObject(airQuality.getCity(), 0, 0, 15);
             this.airRepository.save(temp);
         }
 

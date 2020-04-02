@@ -100,7 +100,7 @@ public class CacheManagerTest {
 
         assertTrue(cacheManagerSut.containsCached("Coimbra"));
 
-        Thread.sleep(4000);
+        Thread.sleep(16000);
 
         assertFalse(cacheManagerSut.containsCached("Coimbra"));
         assertEquals(0, cacheManagerSut.getSize());
@@ -134,8 +134,5 @@ public class CacheManagerTest {
         assertEquals("70", cacheManagerSut.getCached("Coimbra").getAttributes().get("OZONE"));
 
     }
-
-    // TODO: Test if hits and misses are being recorded
-    // TODO: Test last accesses
 
 }
