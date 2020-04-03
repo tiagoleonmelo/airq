@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,10 +29,11 @@ public class ServiceCacheRepoIntegrationTest {
     @Autowired
     CacheManager cacheManager;
 
-    @BeforeEach
-    public void setUpAir() throws Exception {
-
+    @AfterEach
+    public void resetDb() {
+        airRepository.deleteAll();
     }
+
 
     @Test
     public void whenHit_hitIsRecorded() {
