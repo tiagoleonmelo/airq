@@ -39,6 +39,13 @@ public class CacheManager {
 
     //
 
+    public void fullClear() {
+        synchronized (cache) {
+            this.cache.clear();
+            this.cacheData.clear();
+        }
+    }
+
     public int getSize() {
         synchronized (cache) {
             return this.cache.size();
@@ -54,15 +61,19 @@ public class CacheManager {
     public AirQuality getCached(String city) {
         synchronized (cache) {
 
-            // Updating CacheObject metadata
-            CacheObject hit = this.cacheData.get(city);
-            hit.setLastAccess(System.currentTimeMillis());
-            hit.setHits(hit.getHits() + 1);
-            this.airRepository.save(hit);
+            if(this.containsCached(city)) {
+                // Updating CacheObject metadata
+                CacheObject hit = this.cacheData.get(city);
+                hit.setLastAccess(System.currentTimeMillis());
+                hit.setHits(hit.getHits() + 1);
+                this.airRepository.save(hit);
 
-            logger.info("Accessing cache!");
+                logger.info("Accessing cache!");
 
-            return this.cache.get(city);
+                return this.cache.get(city);
+            } else {
+                return null;
+            }
         }
     }
 
@@ -82,12 +93,17 @@ public class CacheManager {
         {
             temp = this.airRepository.findById(airQuality.getCity()).get();
             temp.setMisses(temp.getMisses() + 1);
+            this.airRepository.save(temp);
+            
+            logger.info("Adding 1 miss");
         }
         else
         {
             // Each CacheObject is initialized with a default value of ttl = 15
-            temp = new CacheObject(airQuality.getCity(), 0, 0, 15);
+            temp = new CacheObject(airQuality.getCity(), 0, 1, 15);
             this.airRepository.save(temp);
+            logger.info("Creating 1 miss");
+
         }
 
         synchronized (cache) {
