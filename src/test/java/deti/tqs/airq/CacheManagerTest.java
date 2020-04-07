@@ -100,7 +100,7 @@ public class CacheManagerTest {
 
         assertTrue(cacheManagerSut.containsCached("Coimbra"));
 
-        Thread.sleep(16000);
+        cacheManagerSut.fullClear();
 
         assertFalse(cacheManagerSut.containsCached("Coimbra"));
         assertEquals(0, cacheManagerSut.getSize());
