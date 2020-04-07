@@ -28,19 +28,15 @@ public class AirService {
     private String key = "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc";
     static final Logger logger = Logger.getLogger(AirService.class);
 
-    // Constructor, getters and setters
+    // Constructor
 
     public AirService(AirRepository airRepository) {
         this.airRepository = airRepository;
         this.cacheManager = new CacheManager(airRepository);
     }
 
-    public AirRepository getAirRepository() {
-        return airRepository;
-    }
+    public AirService() {
 
-    public void setAirRepository(AirRepository airRepository) {
-        this.airRepository = airRepository;
     }
 
     //
@@ -71,7 +67,7 @@ public class AirService {
         return this.airRepository.findAll();
     }
 
-    private AirQuality apiCall(String city) throws UnirestException {
+    public AirQuality apiCall(String city) throws UnirestException {
 
         Unirest.setTimeouts(0, 0);
         HttpResponse<JsonNode> response = Unirest

@@ -80,9 +80,9 @@
                             <h1><span id="js-rotating">FAST, SIMPLE, VALUABLE</span></h1>
                             
                             <form class="form-group" action="#" th:action="@{/}" method="post">
-                                <input type="text" class="form-control-input" name="q" required>
+                                <input type="text" class="form-control-input" name="q" id="citySearch" required>
                                 <label class="label-control" for="q">Search for a city!</label>
-                                <input class="btn-solid-lg page-scroll" type="submit" value="DISCOVER" style="margin-top: 30px"/>
+                                <input class="btn-solid-lg page-scroll" type="submit" value="DISCOVER" id="discoverButton" style="margin-top: 30px"/>
                             </form>
                             
                         </div>
@@ -95,16 +95,16 @@
 
 
     <!-- results -->
-    <div id="results" class="basic-1">
+    <div th:if="${air.city != ''}" id="results" class="basic-1">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5">
                     <div class="text-container">
                         <div class="section-title">RESULTS</div>
-                        <h2 th:text="${air.city + ', ' + air.country}">Search for a city above!</h2>
+                        <h2 th:text="${air.city + ', ' + air.country}" id="cityCountry">Search for a city above!</h2>
                         
                         <div th:each="inst : ${air.attributes}">
-                            <p th:text="${inst.key + ' - ' + inst.value}">keyvalue</p>
+                            <p name="attributes" th:text="${inst.key + ' - ' + inst.value}">keyvalue</p>
                         </div>
 
                     </div> <!-- end of text-container -->
@@ -117,7 +117,7 @@
             </div> <!-- end of row -->
         </div> <!-- end of container -->
     </div> <!-- end of basic-1 -->
-    <!-- end of intro -->
+    <!-- end of results -->
     
     	
     <!-- Scripts -->

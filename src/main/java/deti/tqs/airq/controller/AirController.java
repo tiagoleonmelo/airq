@@ -25,17 +25,9 @@ public class AirController {
     @Autowired
     private AirService airService;
 
-    // Constructor, getters and setters
+    // Constructor
 
     public AirController(AirService airService) {
-        this.airService = airService;
-    }
-
-    public AirService getAirService() {
-        return airService;
-    }
-
-    public void setAirService(AirService airService) {
         this.airService = airService;
     }
 

@@ -1,4 +1,4 @@
-package deti.tqs.airq;
+package deti.tqs.airq.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

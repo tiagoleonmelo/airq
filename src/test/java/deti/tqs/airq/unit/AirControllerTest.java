@@ -1,4 +1,4 @@
-package deti.tqs.airq;
+package deti.tqs.airq.unit;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
