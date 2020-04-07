@@ -11,6 +11,7 @@ public class CacheObject
     private String city;
     private int hits;
     private int misses;
+    private int requests;
     private long ttl;
     private long lastAccess;
 
@@ -24,6 +25,7 @@ public class CacheObject
         this.misses = misses;
         this.ttl = ttl;
         this.lastAccess = System.currentTimeMillis();
+        this.requests = 1;
     }
 
     public String getCity() {
@@ -64,6 +66,14 @@ public class CacheObject
 
     public void setLastAccess(long lastAccess) {
         this.lastAccess = lastAccess;
+    }
+
+    public int getRequests() {
+        return requests;
+    }
+
+    public void setRequests(int requests) {
+        this.requests = requests;
     }
 
     @Override

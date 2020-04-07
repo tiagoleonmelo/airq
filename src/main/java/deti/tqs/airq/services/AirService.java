@@ -1,5 +1,7 @@
 package deti.tqs.airq.services;
 
+import java.util.List;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -63,6 +65,12 @@ public class AirService {
         return returnable;
     }
 
+    
+
+    public List<CacheObject> getCacheMetadata() {
+        return this.airRepository.findAll();
+    }
+
     private AirQuality apiCall(String city) throws UnirestException {
 
         Unirest.setTimeouts(0, 0);
@@ -82,9 +90,7 @@ public class AirService {
             return null;
         }
 
-        String capCity = city.substring(0, 1).toUpperCase() + city.substring(1);
-
-        return new AirQuality(first.getString("countryCode"), capCity)
+        return new AirQuality(first.getString("countryCode"), city)
                 .putAttr("PM10", Double.toString(first.getDouble("PM10")))
                 .putAttr("CO", Double.toString(first.getDouble("CO")))
                 .putAttr("OZONE", Double.toString(first.getDouble("OZONE")))

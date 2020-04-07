@@ -54,6 +54,7 @@ public class CacheManager {
 
     public boolean containsCached(String city) {
         synchronized (cache) {
+            logger.info( Integer.toString(cache.size()) );
             return this.cache.containsKey(city);
         }
     }
@@ -91,24 +92,30 @@ public class CacheManager {
         
         if(this.airRepository.existsById(airQuality.getCity()))
         {
-            temp = this.airRepository.findById(airQuality.getCity()).get();
-            temp.setMisses(temp.getMisses() + 1);
-            this.airRepository.save(temp);
-            
-            logger.info("Adding 1 miss");
+            if(this.airRepository.findById(airQuality.getCity()).isPresent()){ 
+                temp = this.airRepository.findById(airQuality.getCity()).get();
+                temp.setMisses(temp.getMisses() + 1);
+                temp.setRequests(temp.getRequests() + 1);
+                this.airRepository.save(temp);
+
+                logger.debug("Adding 1 miss");
+            } else {
+                temp = new CacheObject();
+            }
         }
         else
         {
             // Each CacheObject is initialized with a default value of ttl = 15
-            temp = new CacheObject(airQuality.getCity(), 0, 1, 15);
+            temp = new CacheObject(airQuality.getCity(), 0, 1, 30);
             this.airRepository.save(temp);
-            logger.info("Creating 1 miss");
+            logger.debug("Creating a new CacheObject");
 
         }
 
         synchronized (cache) {
             cache.put(airQuality.getCity(), airQuality);
             cacheData.put(airQuality.getCity(), temp);
+            logger.debug("Saving cache");
         }
 
         final long tempTtl = temp.getTtl();
