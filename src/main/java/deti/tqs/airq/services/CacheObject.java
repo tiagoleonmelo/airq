@@ -114,9 +114,8 @@ public class CacheObject
             return false;
         if (misses != other.misses)
             return false;
-        if (ttl != other.ttl)
-            return false;
-        return true;
+
+        return ttl == other.ttl;
     }
     
 

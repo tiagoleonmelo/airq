@@ -92,8 +92,11 @@ public class CacheManager {
         
         if(this.airRepository.existsById(airQuality.getCity()))
         {
-            if(this.airRepository.findById(airQuality.getCity()).isPresent()){ 
-                temp = this.airRepository.findById(airQuality.getCity()).get();
+
+            java.util.Optional<CacheObject> opt = this.airRepository.findById(airQuality.getCity());
+
+            if(opt.isPresent()){ 
+                temp = opt.get();
                 temp.setMisses(temp.getMisses() + 1);
                 temp.setRequests(temp.getRequests() + 1);
                 this.airRepository.save(temp);
@@ -127,8 +130,13 @@ public class CacheManager {
                     try {
                         Thread.sleep(tempTtl * 1000);
                     } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
                     }
                     cleanup();
+
+                    if(Thread.interrupted()) {
+                        break;
+                    }
                 }
             }
         });
@@ -145,13 +153,13 @@ public class CacheManager {
  
         synchronized (cache) {
  
-            deleteKey = new ArrayList<String>((cache.size() / 2) + 1);
+            deleteKey = new ArrayList<>((cache.size() / 2) + 1);
             String key = null;
             AirQuality c = null;
 
             for (Map.Entry<String, AirQuality> entry : cache.entrySet()) {
-                key = (String) entry.getKey();
-                c = (AirQuality) entry.getValue();
+                key = entry.getKey();
+                c = entry.getValue();
  
                 if (c != null && (now > (this.cacheData.get(key).getTtl() + this.cacheData.get(key).getLastAccess()))) {
                     deleteKey.add(key);
