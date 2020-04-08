@@ -34,10 +34,6 @@ public class AirControllerTest {
         servlet.perform(MockMvcRequestBuilders.get("/api/coimbra")).andExpect(status().isOk())
                 .andExpect(jsonPath("city").value("Coimbra"));
 
-
-        // .andExpect(content().equals(new AirQuality("coimbra", "18.97", "0.63", "69",
-        // "91")));
-
     }
 
 }

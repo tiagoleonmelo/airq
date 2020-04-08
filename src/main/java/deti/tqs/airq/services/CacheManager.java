@@ -63,10 +63,16 @@ public class CacheManager {
         synchronized (cache) {
 
             if(this.containsCached(city)) {
+
                 // Updating CacheObject metadata
                 CacheObject hit = this.cacheData.get(city);
                 hit.setLastAccess(System.currentTimeMillis());
                 hit.setHits(hit.getHits() + 1);
+                hit.setRequests(hit.getRequests() + 1);
+
+                // Updating CacheObject lifespan, 1 hit can mean its ttl is too long.
+                hit.setTtl(hit.getTtl() - 1);
+
                 this.airRepository.save(hit);
 
                 logger.info("Accessing cache!");
@@ -99,9 +105,11 @@ public class CacheManager {
                 temp = opt.get();
                 temp.setMisses(temp.getMisses() + 1);
                 temp.setRequests(temp.getRequests() + 1);
-                this.airRepository.save(temp);
+                temp.setTtl(temp.getTtl() + 1);
 
-                logger.debug("Adding 1 miss");
+                this.airRepository.save(temp);
+                logger.debug("Adding 1 miss and increasing cache object for city " + airQuality.getCity() + " lifespan by 1 second");
+
             } else {
                 temp = new CacheObject();
             }

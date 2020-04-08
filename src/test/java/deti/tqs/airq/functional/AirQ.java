@@ -27,8 +27,6 @@ public class AirQ {
         this.driver.get("http://localhost:8080/");
         driver.manage().window().setSize(new Dimension(1366, 741));
 
-
-        Thread.sleep(4000);
     }
 
 

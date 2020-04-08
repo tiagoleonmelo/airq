@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import deti.tqs.airq.entities.AirQuality;
 import deti.tqs.airq.services.AirService;
 import deti.tqs.airq.services.CacheObject;
+import io.swagger.annotations.ApiOperation;
 
 @Controller
 @RequestMapping("/")
@@ -46,13 +47,12 @@ public class AirController {
 
     }
 
-
-    @GetMapping(value="/{cityName}")
-    public String getCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
+    @GetMapping(value="/search/{cityName}")
+    public String searchCityAirQuality(@PathVariable String cityName, Model model) throws UnirestException
     {
 
         AirQuality airq = this.airService.getAirForCity(formatQuery(cityName));
-
+        
         model.addAttribute("air", airq);
 
         return "index";
@@ -62,6 +62,7 @@ public class AirController {
 
     @GetMapping(value="/api/metadata")
     @ResponseBody
+    @ApiOperation(value = "Greets a person given her name")
     public List<CacheObject> getCacheMetadata(Model mode)
     {
         return this.airService.getCacheMetadata();
@@ -82,7 +83,7 @@ public class AirController {
     public String search(@RequestParam String q, Model model)
     {
 
-        return "redirect:/" + formatQuery(q) + "#results";
+        return "redirect:/search/" + formatQuery(q) + "#results";
 
     }    
 
