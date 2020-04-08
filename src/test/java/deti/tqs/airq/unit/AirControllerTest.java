@@ -4,6 +4,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,13 +29,28 @@ public class AirControllerTest {
     public void whenGetAirForCity_thenReturnAirQuality() throws Exception {
 
         // "Programming" the mock
-        given(airService.getAirForCity("Coimbra")).willReturn(new AirQuality("PT", "Coimbra")
-                .putAttr("PM10", "18.97").putAttr("CO", "0.63").putAttr("OZONE", "69").putAttr("AQI", "91"));
+        given(airService.getAirForCity("Coimbra")).willReturn(new AirQuality("PT", "Coimbra").putAttr("PM10", "18.97")
+                .putAttr("CO", "0.63").putAttr("OZONE", "69").putAttr("AQI", "91"));
 
         // Testing a GET on a given API endpoint
         servlet.perform(MockMvcRequestBuilders.get("/api/coimbra")).andExpect(status().isOk())
                 .andExpect(jsonPath("city").value("Coimbra"));
 
+    }
+
+    @Test
+    public void whenGetHistoricalDataForCity_thenReturnHistoricalData() throws Exception {
+
+        // Programming the mock
+        HashMap<String, AirQuality> hm = new HashMap<>();
+        hm.put("123", new AirQuality("PT", "Coimbra")
+        .putAttr("PM10", "18.97").putAttr("CO", "0.63").putAttr("OZONE", "69").putAttr("AQI", "91"));
+
+        given(airService.getAirHistoryForCity("Coimbra", 3)).willReturn(hm);
+     
+        // Testing a GET on a given API endpoint
+        servlet.perform(MockMvcRequestBuilders.get("/api/history/coimbra&3")).andExpect(status().isOk())
+                .andExpect(jsonPath("123").exists());
     }
 
 }
