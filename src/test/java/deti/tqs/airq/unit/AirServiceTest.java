@@ -1,6 +1,7 @@
 package deti.tqs.airq.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
 
@@ -46,11 +47,11 @@ public class AirServiceTest {
     public void whenGetHistoricalDataForXHours_getXHours() throws UnirestException
     {
 
-        int hours = 3;
+        int hours = 2;
 
-        HashMap<String, AirQuality> hm = sutAirServiceSut.getAirHistoryForCity("Tondela", hours);
+        HashMap<String, AirQuality> hm = sutAirServiceSut.getAirHistoryForCity("Coimbra", hours);
 
-        assertEquals(hours, hm.size());
+        assertTrue(hours >= hm.size());
 
     }
 
@@ -59,13 +60,19 @@ public class AirServiceTest {
     public void whenGetHistoricalDataForCity_getOnlyCity() throws UnirestException
     {
 
-        HashMap<String, AirQuality> hm = sutAirServiceSut.getAirHistoryForCity("Tondela", 3);
+        HashMap<String, AirQuality> hm = sutAirServiceSut.getAirHistoryForCity("Coimbra", 3);
 
         for (String key : hm.keySet()) {
 
-            assertEquals("Tondela", hm.get(key).getCity());
+            assertEquals("Coimbra", hm.get(key).getCity());
             
         }
+    }
+
+    @Test
+    public void whenGetCoordinatesForCoimbra_getRightCoordinates() throws UnirestException
+    {
+        assertEquals("40.2056/-8.4196/PT", sutAirServiceSut.getLatLng("Coimbra"));
     }
 
 

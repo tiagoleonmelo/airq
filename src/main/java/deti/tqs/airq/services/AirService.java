@@ -131,6 +131,7 @@ public class AirService {
                 .asJson();
 
         JSONObject jsonObject = response.getBody().getObject();
+
         JSONArray data = jsonObject.getJSONArray("data");
 
         JSONObject temp;
@@ -139,6 +140,12 @@ public class AirService {
 
         for (int i = 0; i < hours; i++) {
             temp = data.getJSONObject(i);
+
+            if(!temp.getBoolean("data_available"))
+            {
+                logger.error("ERROR Data Unavailable");
+                continue;
+            }
 
             aqi = temp.getJSONObject("indexes").getJSONObject("baqi").getString("aqi_display");
             o3 = Double.toString(temp.getJSONObject("pollutants").getJSONObject("o3").getJSONObject("concentration")

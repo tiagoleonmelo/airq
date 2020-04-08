@@ -46,10 +46,10 @@ public class AirControllerTest {
         hm.put("123", new AirQuality("PT", "Coimbra")
         .putAttr("PM10", "18.97").putAttr("CO", "0.63").putAttr("OZONE", "69").putAttr("AQI", "91"));
 
-        given(airService.getAirHistoryForCity("Coimbra", 3)).willReturn(hm);
+        given(airService.getAirHistoryForCity("Coimbra", 1)).willReturn(hm);
      
         // Testing a GET on a given API endpoint
-        servlet.perform(MockMvcRequestBuilders.get("/api/history/coimbra&3")).andExpect(status().isOk())
+        servlet.perform(MockMvcRequestBuilders.get("/api/history/coimbra&1")).andExpect(status().isOk())
                 .andExpect(jsonPath("123").exists());
     }
 
