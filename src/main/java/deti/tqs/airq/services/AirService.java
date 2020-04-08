@@ -2,6 +2,7 @@ package deti.tqs.airq.services;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -29,6 +30,8 @@ public class AirService {
     private String key = "xmDoN21nog79FuIzd5968aV3ygsNteMN7X1ivXKc";
     private String breezometerKey = "dbc7fe0865814b06b30505a924f32f4f";
     static final Logger logger = Logger.getLogger(AirService.class);
+
+    private static final String OZONE = "OZONE";
 
     // Constructor
 
@@ -69,32 +72,34 @@ public class AirService {
 
     public AirQuality apiCall(String city) throws UnirestException {
 
-        Unirest.setTimeouts(0, 0);
-        HttpResponse<JsonNode> response = Unirest
-                .get("https://api.ambeedata.com/latest/by-city?city=" + String.join("%20", city.split(" ")))
-                .header("accept", "application/json").header("x-api-key", this.key).asJson();
+        JSONObject firstStation = this.getFirstAmbeeStation(city);
 
-        JSONObject jsonObject = response.getBody().getObject();
-        JSONArray stations = jsonObject.getJSONArray("stations");
-        JSONObject first;
-
-        if (stations.length() > 0) {
-            first = stations.getJSONObject(0);
-        } else {
-            logger.error("ERROR: City " + city + " not found!");
-
+        if(firstStation == null){
             return null;
         }
 
-        return new AirQuality(first.getString("countryCode"), city)
-                .putAttr("PM10", Double.toString(first.getDouble("PM10")))
-                .putAttr("CO", Double.toString(first.getDouble("CO")))
-                .putAttr("OZONE", Double.toString(first.getDouble("OZONE")))
-                .putAttr("AQI", Double.toString(first.getDouble("AQI")));
+        return new AirQuality(firstStation.getString("countryCode"), city)
+                .putAttr("PM10", Double.toString(firstStation.getDouble("PM10")))
+                .putAttr("CO", Double.toString(firstStation.getDouble("CO")))
+                .putAttr(OZONE, Double.toString(firstStation.getDouble(OZONE)))
+                .putAttr("AQI", Double.toString(firstStation.getDouble("AQI")));
 
     }
 
     public String getLatLng(String city) throws UnirestException {
+
+        JSONObject first = this.getFirstAmbeeStation(city);
+
+        if(first == null){
+            return null;
+        }
+        
+        return first.getDouble("lat") + "/" + first.getDouble("lng") + "/" + first.getString("countryCode");
+
+    }
+
+    private JSONObject getFirstAmbeeStation(String city) throws UnirestException {
+
         Unirest.setTimeouts(0, 0);
         HttpResponse<JsonNode> response = Unirest
                 .get("https://api.ambeedata.com/latest/by-city?city=" + String.join("%20", city.split(" ")))
@@ -112,11 +117,11 @@ public class AirService {
             return null;
         }
 
-        return first.getDouble("lat") + "/" + first.getDouble("lng") + "/" + first.getString("countryCode");
+        return first;
 
     }
 
-    public HashMap<String, AirQuality> getAirHistoryForCity(String city, int hours) throws UnirestException {
+    public Map<String, AirQuality> getAirHistoryForCity(String city, int hours) throws UnirestException {
         // Since historical data is not available on Ambee, we will be using Breezometer
         // But we still need Ambee to get the Lat and Long given a city name
 
@@ -136,7 +141,14 @@ public class AirService {
 
         JSONObject temp;
         AirQuality airQuality;
-        String aqi, o3, co, pm10;
+        String aqi;
+        String o3;
+        String co;
+        String pm10;
+
+        String poll = "pollutants";
+        String con = "concentration";
+        String val = "value";
 
         for (int i = 0; i < hours; i++) {
             temp = data.getJSONObject(i);
@@ -148,17 +160,17 @@ public class AirService {
             }
 
             aqi = temp.getJSONObject("indexes").getJSONObject("baqi").getString("aqi_display");
-            o3 = Double.toString(temp.getJSONObject("pollutants").getJSONObject("o3").getJSONObject("concentration")
-                    .getDouble("value"));
-            co = Double.toString(temp.getJSONObject("pollutants").getJSONObject("co").getJSONObject("concentration")
-                    .getDouble("value"));
-            pm10 = Double.toString(temp.getJSONObject("pollutants").getJSONObject("pm10")
-                    .getJSONObject("concentration").getDouble("value"));
+            o3 = Double.toString(temp.getJSONObject(poll).getJSONObject("o3").getJSONObject(con)
+                    .getDouble(val));
+            co = Double.toString(temp.getJSONObject(poll).getJSONObject("co").getJSONObject(con)
+                    .getDouble(val));
+            pm10 = Double.toString(temp.getJSONObject(poll).getJSONObject("pm10")
+                    .getJSONObject(con).getDouble(val));
 
             airQuality = new AirQuality(country, city)
                     .putAttr("PM10", pm10)
                     .putAttr("CO", co)
-                    .putAttr("OZONE", o3)
+                    .putAttr(OZONE, o3)
                     .putAttr("AQI", aqi);
 
             ret.put(temp.getString("datetime"), airQuality);

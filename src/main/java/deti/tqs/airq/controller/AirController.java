@@ -1,6 +1,6 @@
 package deti.tqs.airq.controller;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -81,7 +81,7 @@ public class AirController {
 
     @GetMapping(value="/api/history/{cityName}&{hours}")
     @ResponseBody
-    public HashMap<String, AirQuality> apiGetHistoryCityAirQuality(@PathVariable String cityName, @PathVariable int hours, Model model) throws UnirestException
+    public Map<String, AirQuality> apiGetHistoryCityAirQuality(@PathVariable String cityName, @PathVariable int hours, Model model) throws UnirestException
     {
 
         return this.airService.getAirHistoryForCity(formatQuery(cityName), hours);
